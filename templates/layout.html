@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/style.css" />
+    <script
+      src="https://kit.fontawesome.com/b2ea3b7d46.js"
+      crossorigin="anonymous"
+    ></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua:wght@300;400;500;600;700;800;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <title>News Sentiment Analysis</title>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <div class="left">
+        <i class="fas fa-globe fa-2x" aria-hidden="true"></i
+        ><a href="/">News.</a>
+      </div>
+      <div class="right">
+        <div class="search">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            placeholder="Search News"
+            id="searchInput"
+            onkeyup="searchNews()"
+          />
+          <div class="search_results"></div>
+        </div>
+      </div>
+    </div>
+    <div class="main">
+      {% block body %} {% endblock body %}
+      <div class="pagination" style="padding-bottom: 20px; text-align: center">
+        {% if news.has_prev %}
+        <span class="page-btn">Previous</span>
+        {% else %}
+        <span class="disabled page-btn">Previous</span>
+
+        {% endif %} {% for page_num in news.iter_pages() %} {% if page_num %} {%
+        if page_num == news.page %}
+        <span
+          class="current"
+          style="margin-right: 10px; color: green; padding: 5px"
+          >{{ page_num }}</span
+        >
+        {% else %}
+        <span style="margin-right: 10px; color: black; padding: 5px">
+          <a
+            href="{{ url_for(request.endpoint, page=page_num) }}"
+            style="text-decoration: none; color: inherit"
+            >{{ page_num }}</a
+          ></span
+        >
+        {% endif %} {% else %}
+        <span
+          class="ellipsis"
+          style="margin-right: 10px; color: grey; padding: 5px"
+          >...</span
+        >
+        {% endif %} {% endfor %} {% if news.has_next %}
+        <span
+          class="page-btn"
+          style="margin-right: 10px; color: #d70303; padding: 5px"
+          >Next</span
+        >
+        {% else %}
+        <span
+          class="disabled"
+          style="margin-right: 10px; color: grey; padding: 5px"
+          >Next</span
+        >
+        {% endif %}
+      </div>
+    </div>
+    <footer>
+      <div class="left">
+        <i class="fas fa-globe fa-2x" aria-hidden="true"></i><a href="/">News</a
+        ><br />
+        <span class="copyright">Copyright © 2024, All Rights Reserved</span>
+      </div>
+      <div class="mid">
+        <h4>SITE LINKS</h4>
+        <br />
+        <li><a href="/">Home</a></li>
+        <li><a href="/">Help & Support</a></li>
+        <li><a href="/">Privacy Policy</a></li>
+        <li><a href="/">Contact Us</a></li>
+      </div>
+      <div class="right">
+        <h4>NEWS</h4>
+        <br />
+        <li><a href="/">Trending</a></li>
+        <li><a href="/">Market</a></li>
+        <li><a href="/">Buisness</a></li>
+        <li><a href="/">Editorials</a></li>
+      </div>
+      <div class="right">
+        <h4>CONNECT WITH US</h4>
+        <br />
+        <li><a href="/">Youtube</a><i class="fa-brands fa-youtube"></i></li>
+        <li><a href="/">Instagram</a><i class="fa-brands fa-instagram"></i></li>
+        <li><a href="/">Linkedin</a><i class="fa-brands fa-linkedin"></i></li>
+        <li><a href="/">Telegram</a><i class="fa-brands fa-telegram"></i></li>
+      </div>
+    </footer>
+    <script>
+      function toggleContent(btn) {
+        var content = btn.previousElementSibling;
+        if (content.classList.contains("expanded")) {
+          content.style.maxHeight = "60px"; // Set default height when collapsing
+          content.classList.remove("expanded");
+          btn.innerText = "Read More";
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px"; // Expand to full height
+          content.classList.add("expanded");
+          btn.innerText = "Read Less";
+        }
+      }
+
+      const searchNews = () => {
+    let filter = document.getElementById('searchInput').value.toUpperCase();
+    let newsTable = document.getElementById('newsTable');
+    let tr = newsTable.getElementsByTagName('tr');
+
+    for (var i = 0; i < tr.length; i++) {
+        let td = tr[i].getElementsByTagName('td')[0];
+        if (td) {
+            let post = td.getElementsByClassName('post-right')[0];
+            if (post) {
+                let postHeadline = post.querySelector('a h2').innerText.toUpperCase();
+                let postContent = post.querySelector('.content p').innerText.toUpperCase();
+
+                if ((postHeadline.indexOf(filter) > -1) || (postContent.indexOf(filter) > -1)) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            }
+        }
+    }
+}
+
+    </script>
+  </body>
+</html>

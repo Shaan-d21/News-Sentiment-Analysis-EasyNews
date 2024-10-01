@@ -1,0 +1,14 @@
+{% set count = 0 %}
+{% for news in news %}
+{% if loop.index <= 3 %}
+<div class="new-box grid">
+    <h4>{{ news.title }}</h4>
+    <p>
+        {{ news.content|truncate(190, True) }}
+    </p>
+    <button class="read-more-btn" onclick="location.href = '{{news.url}}';">
+        Read More
+    </button>
+</div>
+{% endif %}
+{% endfor %}

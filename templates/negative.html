@@ -1,0 +1,40 @@
+{% extends 'layout.html' %} {% block body %}
+<div class="btn-group">
+  <a href="{{ url_for('positive_news') }}"><button>Positive News</button></a>
+  <a href="{{ url_for('neutral_news') }}"><button>Neutral News</button></a>
+  <a href="{{ url_for('negative_news') }}"
+    ><button style="background-color: rgb(92, 11, 11)">Negative News</button></a
+  >
+</div>
+
+<div class="container">
+  <div class="news-table">
+    <h2>Negative News <i class="fa-solid fa-rss"></i></h2>
+    <table>
+      <tbody>
+        {% for article in news %} {% if article.sentiments == 'negative' %}
+        <tr>
+          <td class="post">
+            <div class="post-left">
+              <img src="{{ article.imageurl }}" alt="" />
+            </div>
+            <div class="post-right">
+              <a href="{{ article.url }}">
+                <h2>{{ article.title }}</h2>
+              </a>
+              <div class="content">
+                <p>{{ article.content }}</p>
+              </div>
+              <button class="read-more-btn" onclick="toggleContent(this)">
+                Read More
+              </button>
+            </div>
+          </td>
+        </tr>
+        {% endif %} {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock body %}

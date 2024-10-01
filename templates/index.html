@@ -1,0 +1,65 @@
+{% extends 'layout.html' %} {% block body %}
+<div class="banner">
+  <div class="b-left">
+    <div class="b-up">
+      <img
+        src="https://images.unsplash.com/photo-1546422904-90eab23c3d7e?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        alt=""
+      />
+    </div>
+    <div class="b-down">
+      <h1>Top Financial News<br />Sentiments</h1>
+      <p>
+        Stay ahead of the curve and navigate the ever-changing economic
+        landscape. Here, we curate and analyze the most impactful economic news
+        stories of the day, providing you with a clear picture of the overall
+        sentiment.
+      </p>
+    </div>
+  </div>
+  <div class="b-right">
+    <div class="new">
+      <h2>New</h2>
+      {% include 'latest.html' %}
+    </div>
+  </div>
+</div>
+<div class="btn-group pnnbtn">
+  <a class="pnn" href="{{ url_for('positive_news') }}"><button>Positive News</button></a>
+  <a class="pnn" href="{{ url_for('neutral_news') }}"><button>Neutral News</button></a>
+  <a class="pnn" href="{{ url_for('negative_news') }}"><button>Negative News</button></a>
+</div>
+
+<div class="container">
+  <div class="news-table">
+    <h2>News <i class="fa-solid fa-rss"></i></h2>
+    <table id="newsTable">
+      <tbody>
+        {% set num = namespace(count = 0) %} {% for article in news %}
+        <tr>
+          {% set num.count = num.count + 1 %}
+          <td class="post">
+            <div class="post-left">
+              <img src="{{ article.imageurl }}" alt="" />
+            </div>
+            <div class="post-right">
+              <a href="{{ article.url }}" target="_blank">
+                <h2>{{ article.title }}</h2>
+              </a>
+              <div class="content">
+                <p>{{ article.content }}</p>
+              </div>
+              <button class="read-more-btn" onclick="toggleContent(this)">
+                Read More
+              </button>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- <div class="count" style="position: absolute; background-color: #000000; color: white; top: 0%;" >{{num}}</div> -->
+
+{% endblock body %}
